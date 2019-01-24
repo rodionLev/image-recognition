@@ -24,10 +24,10 @@ import static java.lang.String.format;
 
 @CommandLine.Command(description = "Recognize FILE(s) and save results in OUTPUT_DIR folder",
         name = "image-recognition", mixinStandardHelpOptions = true, version = "0.0.1")
-public class RecognizeImagesIntoDir implements Callable<Void> {
+public class RecognizeImagesIntoDirTask implements Callable<Void> {
 
     private static final Logger logger
-            = LoggerFactory.getLogger(RecognizeImagesIntoDir.class);
+            = LoggerFactory.getLogger(RecognizeImagesIntoDirTask.class);
 
     @CommandLine.Parameters(index = "0", arity = "1", paramLabel = "OUTPUT_DIR", description = "Output dir")
     private File outputDir;
@@ -38,14 +38,14 @@ public class RecognizeImagesIntoDir implements Callable<Void> {
 
     @Override
     public String toString() {
-        return "RecognizeImagesIntoDir{" +
+        return "RecognizeImagesIntoDirTask{" +
                 "outputDir=" + outputDir + ", already exist: " + outputDir.exists() +
                 ", imagesToRecognize=" + imagesToRecognize +
                 '}';
     }
 
     public static void main(String[] args) throws Exception {
-        RecognizeImagesIntoDir command = new RecognizeImagesIntoDir();
+        RecognizeImagesIntoDirTask command = new RecognizeImagesIntoDirTask();
         CommandLine.call(command, args);
     }
 
@@ -106,7 +106,7 @@ public class RecognizeImagesIntoDir implements Callable<Void> {
         //TODO wait and retry
         Path filePath = Paths.get(outputDir.getAbsolutePath(), outputFileName(image));
         CompletableFuture<Response> fetchResult = service.fetchResult(response.getHeader("Operation-Location"));
-        fetchResult.thenAccept(fetchResponse -> saveContentToFile(image, response, filePath));
+        fetchResult.thenAccept(fetchResponse -> saveContentToFile(image, fetchResponse, filePath));
         fetchResult.join();
     }
 
