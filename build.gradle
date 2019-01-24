@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'application'
 }
-mainClassName = 'com.demo.cli.RecognizeImagesIntoDir'
+mainClassName = 'com.demo.cli.RecognizeImagesIntoDirTask'
 
 
 group 'com.demo'
