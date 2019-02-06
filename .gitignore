@@ -1,6 +1,10 @@
 .idea
 out
 
+#exclude default image processing folders:
+input
+output
+
 .gradle
 /build/
 
