@@ -3,6 +3,7 @@ package com.demo.cli;
 import com.demo.JsonUtils;
 import com.demo.azure.AzureTargetTransformer;
 import com.demo.azure.AzureWalmartTransformer;
+import com.demo.azure.KingAzureTransformer;
 import com.demo.azure.dto.RecognitionItem;
 import com.demo.azure.dto.RecognitionResponse;
 import com.demo.azure.dto.TextLine;
@@ -66,6 +67,8 @@ public class RecognizeImagesIntoDirTask {
             return AzureWalmartTransformer::transform;
         if (containsText(item.getRecognitionResponse().getRecognitionResult().getLines(), "Target", 10))
             return AzureTargetTransformer::transform;
+        if (containsText(item.getRecognitionResponse().getRecognitionResult().getLines(), "King", 5))
+            return KingAzureTransformer::transform;
         return Function.identity();
     }
 

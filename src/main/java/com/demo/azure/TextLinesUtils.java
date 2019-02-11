@@ -26,11 +26,12 @@ public class TextLinesUtils {
                 result.addLast(concat(result.removeLast(), lines[i]));
             } else result.add(lines[i]);
         }
+
         return result;
     }
 
     private static int oneThirdOfLineHeight(TextLine second) {
-        return (second.bottomLeftY() - second.upperLeftY()) / 3;
+        return (int) ((second.bottomLeftY() - second.upperLeftY()) / 1.7);
     }
 
     private static TextLine concat(TextLine removed, TextLine line) {

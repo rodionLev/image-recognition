@@ -13,18 +13,18 @@ import java.util.regex.Pattern;
 import static com.demo.azure.TextLinesUtils.containsString;
 import static com.demo.azure.TextLinesUtils.linesBetween;
 
-public class AzureTargetTransformer {
+public class KingAzureTransformer {
 
-    private static final Pattern ITEM_REGEX = Pattern.compile("(\\d{9,})\\s(.[^$]*)(\\$(\\d+\\s*.\\s*\\d+))?");
+    private static Pattern ITEM_PATTERN = Pattern.compile("(.*?)(\\d+\\s*.\\s*\\d+)(-)?(\\s*B)?");
 
     public static Receipt transform(RecognitionResponse recognitionResponse) {
         Receipt receipt = new Receipt();
-        receipt.setStore("Target");
+        receipt.setStore("King Scoopers");
         TextLine[] lines = recognitionResponse.getRecognitionResult().getLines();
-        receipt.setAddress(String.join(", ", linesBetween(lines, containsString("Target"), AzureTargetTransformer::isItemLine)));
+        receipt.setAddress(String.join(", ", linesBetween(lines, containsString("King Scoopers"), containsString("Your cashier"))));
         List<ReceiptItem> receiptItems = new LinkedList<>();
         receipt.setReceiptItems(receiptItems);
-        for (String text : linesBetween(lines, AzureTargetTransformer::isItemLine, containsString("SUBTOTAL"))) {
+        for (String text : linesBetween(lines, containsString("Your cashier"), containsString("TAX"))) {
             ReceiptItem receiptItem = parseItemLine(text);
             if (receiptItem != null) {
                 receiptItems.add(receiptItem);
@@ -34,20 +34,17 @@ public class AzureTargetTransformer {
     }
 
     private static ReceiptItem parseItemLine(String text) {
-        Matcher matcher = ITEM_REGEX.matcher(text.trim());
+        Matcher matcher = ITEM_PATTERN.matcher(text.trim());
         if (matcher.find()) {
-            ReceiptItem result = new ReceiptItem();
-            result.setUpc(matcher.group(1));
-            result.setDescription(matcher.group(2));
-            String price = matcher.group(4);
-            if (price != null) {
-                result.setPrice(price.replaceAll(" ", ""));
-            }
-            return result;
-        } else return null;
+            ReceiptItem receiptItem = new ReceiptItem();
+            receiptItem.setDescription(matcher.group(1));
+            receiptItem.setPrice(matcher.group(2));
+            return receiptItem;
+        }
+        return null;
     }
 
     private static boolean isItemLine(TextLine line) {
-        return ITEM_REGEX.matcher(line.getText()).find();
+        return ITEM_PATTERN.matcher(line.getText()).find();
     }
 }

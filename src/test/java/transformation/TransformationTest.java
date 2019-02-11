@@ -18,10 +18,10 @@ public class TransformationTest {
 
     @Test
     public void testJsonTransformation() throws IOException {
-        RecognitionResponse recognitionResponse = readRecognitionResponse("transformation/img-190122154212.json");
+        RecognitionResponse recognitionResponse = readRecognitionResponse("transformation/target_response.json");
         assertNotNull(recognitionResponse);
         List<TextLine> textLines = groupWithDistance(recognitionResponse.getRecognitionResult().getLines());
-        assertEquals(10, textLines.size());
+        assertEquals(53, textLines.size());
     }
 
     public static RecognitionResponse readRecognitionResponse(String path) throws IOException {
