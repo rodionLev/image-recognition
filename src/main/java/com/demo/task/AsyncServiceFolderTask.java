@@ -1,6 +1,5 @@
 package com.demo.task;
 
-import com.demo.abby.AbbyAsyncHttpOcrService;
 import com.demo.azure.service.AzureOcrService;
 import com.demo.service.AsyncHttpOcrService;
 import com.nurkiewicz.asyncretry.AsyncRetryExecutor;
@@ -70,10 +69,6 @@ public class AsyncServiceFolderTask implements Function<Collection<File>, List<A
     }
 
     private AsyncHttpOcrService getService() {
-        String configuredProvider = config.getString("provider");
-        if (configuredProvider.equals("abby")) {
-            return new AbbyAsyncHttpOcrService(config);
-        }
         return new AzureOcrService(config);
     }
 
