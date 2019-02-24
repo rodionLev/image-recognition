@@ -31,7 +31,7 @@ import static java.lang.String.format;
 @Slf4j
 public class RecognizeImagesIntoDirTask {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Config config = loadConfiguration();
 
 
@@ -104,6 +104,7 @@ public class RecognizeImagesIntoDirTask {
         Config config;
         String configPath = System.getProperty("config");
         if (configPath != null) {
+            log.info("Loading external config file: {}", configPath);
             config = ConfigFactory
                     .parseFile(new File(configPath))
                     .withFallback(defaultConfig());
